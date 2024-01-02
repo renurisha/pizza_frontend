@@ -1,0 +1,32 @@
+{
+  "title": "Home",
+  "parameters": {
+    "createdByData": ""
+  },
+  "data": {},
+  "layout": [
+    {
+      "t-component": "PMGrid",
+      "item": true,
+      "container": true,
+      "direction": "column",
+      "background": "#FFFFFF",
+      "Components": [
+        {
+          "t-component": "PMGrid",
+          "container": true,
+          "direction": "row",
+          "background": "#FFFFFF",
+          "Components": [
+            {
+              "t-component": "PMText",
+              "marginBottom": 1,
+              "color": "info",
+              "children": "Welcome To Home page"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

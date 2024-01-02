@@ -1,0 +1,22 @@
+{
+  "data": {
+    "menuItems": {
+      "type": "static",
+      "value": [
+        { "type": "Subheader", "text": "Clickup" },
+        { "type": "Divider" },
+
+        {
+          "text": "Home",
+          "url": "/",
+          "icon": {
+            "icon": "home",
+            "text_color": "info",
+            "size": "large"
+          }
+        }
+      ]
+    }
+  },
+  "layout": []
+}

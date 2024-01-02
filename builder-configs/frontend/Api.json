@@ -1,0 +1,46 @@
+[
+  {
+    "baseUrl": "http://127.0.0.1:8000",
+    "namespace": "Pizza Delivery",
+    "endpoints": [
+      {
+        "name": "userCreate",
+        "data": {
+          "url": "/api/auth/signup",
+          "method": "POST"
+        },
+        "invalidates": ["getAllUsers"]
+      },
+      {
+        "name": "getAllUsers",
+        "data": {
+          "url": "/api/auth/allUsers",
+          "method": "GET"
+        }
+      },
+
+      {
+        "name": "getAllCategory",
+        "data": {
+          "url": "/api/category/allCategory",
+          "method": "GET"
+        }
+      },
+      {
+        "name": "orderCreate",
+        "data": {
+          "url": "/api/order/create",
+          "method": "POST"
+        }
+      },
+
+      {
+        "name": "getAllProducts",
+        "data": {
+          "url": "/api/product/allProduct",
+          "method": "GET"
+        }
+      }
+    ]
+  }
+]

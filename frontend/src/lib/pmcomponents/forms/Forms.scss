@@ -1,0 +1,23 @@
+@use '../../styles/base' as *;
+.button-rounded {
+    border-radius: 99px;
+}
+
+@include emphasis('button', 'bold');
+@include emphasis('button', 'subtle');
+@include emphasis('button', 'minimal');
+@include emphasis('button', 'bold', 'info');
+@include emphasis('button', 'subtle', 'info');
+@include emphasis('button', 'minimal', 'info');
+@include emphasis('button', 'bold', 'destructive');
+@include emphasis('button', 'subtle', 'destructive');
+@include emphasis('button', 'minimal', 'destructive');
+@include emphasis('button', 'bold', 'contrast');
+@include emphasis('button', 'subtle', 'contrast');
+@include emphasis('button', 'minimal', 'contrast');
+@include size('button', 'small');
+@include size('button', 'medium');
+@include size('button', 'large');
+.button-basic {
+    padding: .6em 1.6em;
+}

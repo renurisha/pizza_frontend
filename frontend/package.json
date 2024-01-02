@@ -1,0 +1,79 @@
+{
+  "name": "Ecomoney Client Portal",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.13.5",
+    "@mui/x-data-grid": "^6.5.0",
+    "@mui/x-date-pickers": "^6.5.0",
+    "@reduxjs/toolkit": "^1.8.2",
+    "@vitejs/plugin-react": "^4.0.4",
+    "bootstrap": "^5.3.2",
+    "chart.js": "^3.9.1",
+    "date-fns": "^2.29.3",
+    "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
+    "multiselect-react-dropdown": "^2.0.25",
+    "notistack": "^2.0.8",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-big-calendar": "^1.5.0",
+    "react-bootstrap": "^2.8.0",
+    "react-chartjs-2": "^4.3.1",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.2",
+    "react-hook-form-mui": "^6.2.0",
+    "react-icons": "^4.4.0",
+    "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0",
+    "react-slick": "^0.29.0",
+    "react-uuid": "^2.0.0",
+    "react-webcam": "^7.1.1",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^6.0.8",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.62",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "sass": "^1.52.0",
+    "typescript": "^4.8.3",
+    "vite": "^4.4.9",
+    "vite-plugin-svgr": "^3.2.0",
+    "vite-tsconfig-paths": "^4.2.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "eqeqeq": "off"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

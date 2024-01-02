@@ -1,0 +1,34 @@
+.avatar-circle {
+    border-radius: 50%;
+}
+
+.avatar-square {
+    border-radius: 4px;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-view-small {
+    height: 24px;
+    width: 24px;
+}
+
+.avatar-view-medium {
+    height: 32px;
+    width: 32px;
+}
+
+.avatar-view-large {
+    height: 40px;
+    width: 40px;
+}
+
+.avatar-position {
+    margin: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
