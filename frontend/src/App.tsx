@@ -8,8 +8,16 @@ import { theme } from "./theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { SnackbarProvider } from "notistack";
-import jwt_decode from "jwt-decode";
-import { Home, Category, ProductList } from "./pages";
+
+import {
+  Home,
+  Category,
+  ProductList,
+  SelectedProductPage,
+  Login,
+  AdminPanelOrders,
+  OrderUpdate,
+} from "./pages";
 import { NavigationMenu } from "./pages";
 import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
@@ -21,48 +29,6 @@ function App() {
   const userProfileStore = useSelector(
     (states) => states?.appStore?.userProfile
   );
-
-  if (auth_token) {
-    localStorage.setItem(
-      "permissionCodes",
-      JSON.stringify(jwt_decode(auth_token)["permission_codes"])
-    );
-  }
-  if (userProfileStore && !userProfile) {
-    localStorage.setItem("userProfile", userProfileStore || "");
-  } else if (!userProfileStore && userProfile) {
-    var formatedData = {
-      userProfile: userProfile || "",
-    };
-    dispatch(mergeStore(formatedData));
-  }
-
-  if (authTokenstore && !auth_token) {
-    localStorage.setItem("authToken", authTokenstore);
-    localStorage.setItem(
-      "permissionCodes",
-      JSON.stringify(jwt_decode(authTokenstore)?.permission_codes)
-    );
-  } else if (!authTokenstore && auth_token) {
-    var formatedData = {
-      authToken: auth_token,
-    };
-
-    localStorage.setItem(
-      "permissionCodes",
-      JSON.stringify(jwt_decode(auth_token)["permission_codes"])
-    );
-    dispatch(mergeStore(formatedData));
-  }
-  const authToken = authTokenstore ? authTokenstore : auth_token;
-  if (authToken) {
-    var decoded = jwt_decode(authToken);
-    if (Date.now() > decoded.exp * 1000) {
-      localStorage.clear();
-    }
-  } else {
-    localStorage.clear();
-  }
 
   return (
     <BrowserRouter>
@@ -79,11 +45,22 @@ function App() {
                         <Route path="*" element={<PageNotFound />}></Route> */}
 
             <Route element={<NavigationMenu />}>
+              <Route path="/login" element={<Login />}></Route>
               <Route path="/" element={<Home />}></Route>
               <Route path="/category" element={<Category />}></Route>
+              <Route path="/allOrders" element={<AdminPanelOrders />}></Route>
               <Route
                 path="/productList/:categoryId"
                 element={<ProductList />}
+              ></Route>
+
+              <Route
+                path="/selectedProducts/:categoryId"
+                element={<SelectedProductPage />}
+              ></Route>
+              <Route
+                path="/orderDetails/:orderId"
+                element={<OrderUpdate />}
               ></Route>
             </Route>
           </Routes>

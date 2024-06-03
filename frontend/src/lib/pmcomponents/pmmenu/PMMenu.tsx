@@ -1,7 +1,7 @@
 // @ts-nocheck
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
+import { useState, useEffect } from "react";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Menu from "@mui/icons-material/Menu";
@@ -24,6 +24,8 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PMGrid, PMIcon, SvgRender } from "../../pmcomponents";
+import { useGetAllUsersQuery } from "store/apiSlice";
+import { jwtDecode } from "jwt-decode";
 
 const drawerWidth = 240;
 
@@ -37,7 +39,8 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
+  // marginLeft: `-${drawerWidth}px`,
+  marginLeft: 0,
   maxWidth: "100%",
   minHeight: "100vh",
   ...(open && {
@@ -61,8 +64,10 @@ const AppBar = styled(MuiAppBar, {
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
+    // width: `calc(100% - ${drawerWidth}px)`,
+    width: "100%",
+    // marginLeft: `${drawerWidth}px`,
+    marginLeft: 0,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -80,6 +85,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function PMMenu(props) {
+  var page = {
+    data: {},
+    parameters: {
+      route: {},
+    },
+  };
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [subMenuOpen, setSubMenuOpen] = React.useState({});
@@ -89,7 +101,7 @@ export default function PMMenu(props) {
   const location = useLocation();
   const params = useParams<Record<string, string>>();
   const history = useNavigate();
-
+  const [decodeParamsData, setDecodeParamsData] = useState("userId");
   const currentPath = Object.values(params).reduce(
     (path, param) => path.replace("/" + param, ""),
     location.pathname
@@ -109,7 +121,7 @@ export default function PMMenu(props) {
 
   const profilePopOpen = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
+  const [logoutFlag, setLogoutFlag] = useState(false);
   const userProfile = JSON.parse(localStorage?.getItem("userProfile"));
   const permissionCodes = localStorage?.getItem("permissionCodes") || [];
   const userId = userProfile?.user_id;
@@ -118,8 +130,10 @@ export default function PMMenu(props) {
   const phone = userProfile?.user?.phones[0]?.phone;
 
   const logOut = () => {
-    localStorage.clear();
-    window.location.reload();
+    localStorage.removeItem("accessToken");
+
+    localStorage.removeItem("clickedProduct");
+    setLogoutFlag(true);
     history("/");
   };
 
@@ -128,6 +142,15 @@ export default function PMMenu(props) {
       props.onClick({ url: url });
     }
   };
+
+  const getAllUsersParams = {
+    username: decodeParamsData,
+  };
+  ({
+    data: page.data.loggedInUserDetails,
+    isFetching: page.data.loggedInUserDetailsIsFetching,
+    isLoading: page.data.loggedInUserDetailsIsLoading,
+  } = useGetAllUsersQuery(getAllUsersParams));
 
   const expandMenu = (index) => {
     let subMenuOpenTemp = { ...subMenuOpen };
@@ -187,6 +210,18 @@ export default function PMMenu(props) {
       children: `${name[0].toUpperCase()}`,
     };
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      let decodeUsername = jwtDecode(
+        localStorage.getItem("accessToken")
+      )?.username;
+      if (decodeUsername) {
+        setDecodeParamsData(decodeUsername);
+      }
+    }
+  }, []);
+
   const menuItemLayout = (items, isChild = false, parentIndex = 0) => {
     return (
       <List>
@@ -307,9 +342,88 @@ export default function PMMenu(props) {
   };
 
   return (
-    <Main open={open}>
-      {/* <DrawerHeader /> */}
-      {props?.children}
-    </Main>
+    <Box sx={{ display: "flex" }}>
+      <AppBar position="fixed" open={open}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            // onClick={handleDrawerOpen}
+            edge="start"
+            sx={{ mr: 2, ...(open && { display: "none" }) }}
+          >
+            <Menu />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            sx={{ flexGrow: 1 }}
+          >
+            {currentPageTitle || ""}
+          </Typography>
+
+          <PMGrid alignItems={"right"} grid={12}>
+            <PMGrid
+              container={true}
+              marginTop="auto"
+              alignItems="center"
+              direction="row"
+            >
+              <IconButton onClick={handleProfileClick} sx={{ p: 0 }}>
+                <Avatar {...stringAvatar(userName)} alt={userName || "A"} />
+              </IconButton>
+
+              <IconButton color="inherit" onClick={handleProfileClick}>
+                <ExpandMore color="inherit" />
+              </IconButton>
+            </PMGrid>
+            <Popover
+              id={id}
+              open={profilePopOpen}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              sx={{ p: 2 }}
+            >
+              <Stack sx={{ p: 2 }} justifyContent="right">
+                <Typography variant="h6" sx={{ py: 2 }}>
+                  Login User:
+                </Typography>
+                <Typography variant="caption">
+                  name -{" "}
+                  {page.data.loggedInUserDetails?.items?.[0]?.username || ""}
+                </Typography>
+                <Typography variant="caption">
+                  email -{" "}
+                  {page.data.loggedInUserDetails?.items?.[0]?.email || ""}
+                </Typography>
+                <Typography variant="caption">
+                  phone -{" "}
+                  {page.data.loggedInUserDetails?.items?.[0]?.phone_number ||
+                    ""}
+                </Typography>
+
+                <Button
+                  variant="contained"
+                  sx={{ mt: 2 }}
+                  color="error"
+                  size="small"
+                  onClick={logOut}
+                >
+                  Log Out
+                </Button>
+              </Stack>
+            </Popover>
+          </PMGrid>
+        </Toolbar>
+      </AppBar>
+
+      <Main open={open}>{props?.children}</Main>
+    </Box>
   );
 }

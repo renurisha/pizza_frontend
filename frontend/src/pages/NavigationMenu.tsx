@@ -30,7 +30,18 @@ function NavigationMenu() {
   //   };
 
   const MenuHomeCLick = (data) => {
-    history("/");
+    if (localStorage.getItem("accessToken")) {
+      let decodeUsername = jwtDecode(
+        localStorage.getItem("accessToken")
+      )?.username;
+      if (decodeUsername) {
+        history("/allOrders");
+      } else {
+        history("/");
+      }
+    } else {
+      history("/");
+    }
   };
 
   return (
@@ -38,12 +49,21 @@ function NavigationMenu() {
       <PMMenu
         open={true}
         title=""
-        //    / logo="https://ecomoney.in/assets/public/images/new-logo.jpg"
+        logo="https://ecomoney.in/assets/public/images/new-logo.jpg"
         onClick={MenuHomeCLick}
         menuItems={page.data.menuItems}
       >
         <Outlet></Outlet>
       </PMMenu>
+      {/* <PMMenu
+        open={true}
+        title=""
+        //    / logo="https://ecomoney.in/assets/public/images/new-logo.jpg"
+        onClick={MenuHomeCLick}
+        menuItems={page.data.menuItems}
+      >
+        <Outlet></Outlet>
+      </PMMenu> */}
     </div>
   );
 }
